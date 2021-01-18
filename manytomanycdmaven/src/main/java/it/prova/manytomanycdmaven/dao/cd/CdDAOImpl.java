@@ -53,7 +53,7 @@ public class CdDAOImpl implements CdDAO {
 	
 	public List<Cd> getEagerGeneri (Genere genereInput) throws Exception{
 		TypedQuery<Cd> query = entityManager
-				.createQuery("select c from Cd c left join c.generi g where g =: genere", Cd.class);
+				.createQuery("select c from Cd c left join fetch c.generi g where g =: genere", Cd.class);
 		query.setParameter("genere", genereInput);
 		
 		return query.getResultList();

@@ -14,7 +14,8 @@ import it.prova.manytomanycdmaven.model.Genere;
 public class GenereServiceImpl implements GenereService {
 
 	private GenereDAO genereDAO;
-
+	private CdDAO cdDao;
+	
 	@Override
 	public List<Genere> listAll() throws Exception {
 		// questo è come una connection
@@ -108,14 +109,15 @@ public class GenereServiceImpl implements GenereService {
 		try {
 			// questo è come il MyConnection.getConnection()
 			entityManager.getTransaction().begin();
-			CdDAO cdDao=MyDaoFactory.getCdDAOInstance();
+			cdDao=MyDaoFactory.getCdDAOInstance();
+			
 			cdDao.setEntityManager(entityManager);
 
 			List<Cd> lista =  cdDao.getEagerGeneri(genereInstance);
 			for(Cd cdItem:lista) {
 				System.out.println(cdItem);
-				cdItem.getGeneri().remove(genereInstance);
-				//cdItem.removeFromGeneri(genereInstance);
+				//cdItem.getGeneri().remove(genereInstance);
+				cdItem.removeFromGeneri(genereInstance);
 				cdDao.update(cdItem);
 			}
 			genereDAO.setEntityManager(entityManager);
